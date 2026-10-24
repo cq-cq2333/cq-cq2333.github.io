@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cq-cq2333.github.io/sitemap.xml
