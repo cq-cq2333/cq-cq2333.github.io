@@ -801,3 +801,34 @@ body, .nav, .card, .contact-card, .hero-stats, .hero-stats > div,
   transition-duration: 0.3s;
   transition-timing-function: ease;
 }
+
+/* ============================================================
+   语言切换器（简 / 繁 / EN）
+   ============================================================ */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-elev);
+}
+.lang-switch a {
+  font-size: .72rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: .32em .6em;
+  border-radius: 999px;
+  color: var(--text-faint);
+  text-decoration: none;
+  transition: color .15s ease, background .15s ease;
+}
+.lang-switch a:hover { color: var(--text); }
+.lang-switch a.active {
+  color: var(--accent);
+  background: var(--accent-soft, rgba(215,255,62,.12));
+}
+@media (max-width: 720px) {
+  .lang-switch a { font-size: .68rem; padding: .3em .5em; }
+}

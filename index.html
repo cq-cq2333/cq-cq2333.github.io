@@ -22,6 +22,41 @@
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="alternate" hreflang="zh-CN" href="https://cq-cq2333.github.io/">
+<link rel="alternate" hreflang="zh-TW" href="https://cq-cq2333.github.io/zh-tw/">
+<link rel="alternate" hreflang="en" href="https://cq-cq2333.github.io/en/">
+<link rel="alternate" hreflang="x-default" href="https://cq-cq2333.github.io/en/">
+
+<!-- 根据访问者 IP 自动选择语言（首次访问且用户未手动选择过时生效） -->
+<script>
+  (function () {
+    try {
+      var stored = localStorage.getItem('lang');
+      if (stored === 'zh-tw') { location.replace('/zh-tw/'); return; }
+      if (stored === 'en') { location.replace('/en/'); return; }
+      if (localStorage.getItem('geoDone')) return; // 只在首次访问时探测一次
+      localStorage.setItem('geoDone', '1');
+      var go = function (lang) {
+        try { localStorage.setItem('lang', lang); } catch (e) {}
+        if (lang === 'zh-tw') location.replace('/zh-tw/');
+        else if (lang === 'en') location.replace('/en/');
+      };
+      var pick = function (c) {
+        c = String(c || '').toUpperCase();
+        if (c === 'HK' || c === 'MO' || c === 'TW') go('zh-tw');
+        else if (c !== 'CN' && c !== 'SG' && c !== 'MY') go('en');
+      };
+      // 主源 ipapi.co，失败时回退 ipwho.is（均支持 CORS）
+      fetch('https://ipapi.co/json/').then(function (r) { return r.json(); }).then(function (d) {
+        pick(d.country_code);
+      }).catch(function () {
+        fetch('https://ipwho.is/').then(function (r) { return r.json(); }).then(function (d) {
+          pick(d.country_code);
+        }).catch(function () {});
+      });
+    } catch (e) {}
+  })();
+</script>
 <link rel="preload" href="assets/fonts/bricolage-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/style.css">
 
@@ -56,6 +91,11 @@
     </nav>
 
     <div class="nav-actions">
+      <div class="lang-switch" role="group" aria-label="语言 / Language">
+        <a href="/" class="active" aria-current="true">简</a>
+        <a href="/zh-tw/" onclick="try{localStorage.setItem('lang','zh-tw')}catch(e){}">繁</a>
+        <a href="/en/" onclick="try{localStorage.setItem('lang','en')}catch(e){}">EN</a>
+      </div>
       <button class="icon-btn no-print" id="theme-toggle" type="button" aria-label="切换深浅色主题">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
       </button>
