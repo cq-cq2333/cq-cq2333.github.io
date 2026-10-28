@@ -687,3 +687,117 @@ html { scroll-padding-top: 80px; }
   .copy-row .pill { display: block !important; border: 0 !important; padding: 0 !important; font-size: 9pt !important; line-height: 1.6 !important; }
   .footer { display: none !important; }
 }
+
+/* ==========================================================================
+   夜间霓虹层（仅暗色主题；亮色主题完全保持原版）
+   原版排版 × 霓虹版配色：辉光加强、渐变更醒目
+   ========================================================================== */
+:root[data-theme='dark'] {
+  --bg: #090b10;
+  --bg-elev: #10131b;
+  --bg-elev-2: #151923;
+  --line: rgba(215, 255, 62, 0.12);
+  --line-strong: rgba(215, 255, 62, 0.24);
+  --text-dim: #a8b0c2;
+  --text-faint: #8b94a8;
+  --glow: rgba(215, 255, 62, 0.18);
+  --neon: #6ee7ff;
+}
+
+/* 暗色氛围：只在顶侧保留一点淡辉光，其余恢复原样的纯深色 */
+html[data-theme='dark'] body {
+  background-image:
+    radial-gradient(40% 26% at 50% 0%, rgba(215, 255, 62, 0.08), transparent 70%);
+}
+/* 顶部霓虹：仅 2px 渐变细光条 */
+html[data-theme='dark'] body::after {
+  background:
+    linear-gradient(90deg, var(--accent), var(--neon) 46%, rgba(110, 231, 255, 0) 94%) top / 100% 2px no-repeat;
+}
+
+/* 标题强调行：青柠 → 霓虹青渐变字 + 辉光 */
+html[data-theme='dark'] .hero h1 .accent-line {
+  background-image: linear-gradient(100deg, var(--accent) 8%, #9fff8a 44%, var(--neon) 92%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 26px var(--glow)) drop-shadow(0 0 60px rgba(110, 231, 255, 0.14));
+}
+
+/* 数字高光：冷白 → 青柠 → 霓虹青 */
+html[data-theme='dark'] .card-num,
+html[data-theme='dark'] .stat-num {
+  background: linear-gradient(150deg, #f2ffd0 0%, var(--accent) 42%, var(--neon) 108%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+html[data-theme='dark'] .stat-num .unit,
+html[data-theme='dark'] .card-num .unit { -webkit-text-fill-color: var(--accent); }
+
+/* 区块标题点缀：eyebrow 前置霓虹短划 */
+html[data-theme='dark'] .eyebrow { color: color-mix(in srgb, var(--accent) 78%, var(--neon)); }
+html[data-theme='dark'] .eyebrow::before {
+  content: ''; display: inline-block; width: 1.6em; height: 2px;
+  margin-right: 0.6em; vertical-align: 0.22em;
+  background: linear-gradient(90deg, var(--accent), var(--neon));
+  box-shadow: 0 0 8px var(--glow);
+}
+
+/* 主按钮：霓虹渐变 + 光晕投影 */
+html[data-theme='dark'] .btn-primary {
+  background: linear-gradient(115deg, #d7ff3e 8%, #9fff8a 45%, #6ee7ff 95%);
+  color: #0a0c08;
+  box-shadow: 0 8px 26px -10px var(--glow), 0 0 30px -12px rgba(110, 231, 255, 0.5);
+}
+html[data-theme='dark'] .btn-primary:hover {
+  box-shadow: 0 12px 34px -10px var(--glow), 0 0 44px -10px rgba(110, 231, 255, 0.65);
+}
+
+/* 卡片悬停：霓虹描边 + 余晖显形 */
+html[data-theme='dark'] .card::after {
+  content: ''; position: absolute; inset: 0; z-index: 0;
+  background: radial-gradient(120% 80% at 50% 0%, var(--glow), transparent 62%);
+  opacity: 0; transition: opacity 0.3s; pointer-events: none;
+}
+html[data-theme='dark'] .card > * { position: relative; z-index: 1; }
+html[data-theme='dark'] .card:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  box-shadow: 0 26px 54px -26px rgba(0, 0, 0, 0.85), 0 0 44px -20px var(--glow);
+}
+html[data-theme='dark'] .card:hover::after { opacity: 1; }
+
+/* 抠图证件照：夜间保留原图白底（照片原大小矩形），四周窄幅羽化融入黑色页面 */
+html[data-theme='dark'] .portrait-card img {
+  background: linear-gradient(180deg, #ffffff 0%, #f6f6f2 60%, #ecece8 100%);
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent 0, #000 30px),
+    linear-gradient(0deg, transparent 0, #000 26px),
+    linear-gradient(90deg, transparent 0, #000 26px, #000 calc(100% - 26px), transparent 100%);
+          mask-image:
+    linear-gradient(180deg, transparent 0, #000 30px),
+    linear-gradient(0deg, transparent 0, #000 26px),
+    linear-gradient(90deg, transparent 0, #000 26px, #000 calc(100% - 26px), transparent 100%);
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
+  border-radius: 0;
+  box-shadow: none;
+}
+html[data-theme='dark'] .hero-avatar img {
+  background: linear-gradient(180deg, #ffffff 0%, #f2f2ee 100%);
+  -webkit-mask-image:
+    linear-gradient(180deg, transparent 0, #000 12px),
+    linear-gradient(0deg, transparent 0, #000 10px),
+    linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 10px), transparent 100%);
+          mask-image:
+    linear-gradient(180deg, transparent 0, #000 12px),
+    linear-gradient(0deg, transparent 0, #000 10px),
+    linear-gradient(90deg, transparent 0, #000 10px, #000 calc(100% - 10px), transparent 100%);
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
+}
+
+/* 主题切换平滑过渡 */
+body, .nav, .card, .contact-card, .hero-stats, .hero-stats > div,
+.pill, .tag, .paper, .btn, .icon-btn, .job {
+  transition-property: background-color, background, color, border-color, box-shadow, transform, opacity;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}
