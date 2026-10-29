@@ -165,7 +165,9 @@ html { scroll-padding-top: 80px; }
 /* ---------- 5. 顶部导航 ---------- */
 .nav {
   position: sticky; top: 0; z-index: 50;
-  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+          backdrop-filter: blur(14px);
+  background: var(--bg); /* 兜底：不支持 color-mix 的旧 Safari 用不透明背景 */
   background: color-mix(in srgb, var(--bg) 78%, transparent);
   border-bottom: 1px solid var(--line);
 }
@@ -177,7 +179,8 @@ html { scroll-padding-top: 80px; }
   min-width: 0; flex: 0 1 auto;
   overflow-x: auto; scrollbar-width: none;
   -ms-overflow-style: none;
-  mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
 }
 .nav-links::-webkit-scrollbar { display: none; }
 .nav-links a { white-space: nowrap; }
@@ -203,11 +206,12 @@ html { scroll-padding-top: 80px; }
 }
 .nav-links a:hover, .nav-links a.is-active { color: var(--text); background: var(--bg-elev-2); }
 .nav-links a.is-active { color: var(--accent); }
-.nav-actions { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.nav-actions { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; flex-shrink: 0; }
 .nav-links + .nav-actions { margin-left: 0; }
 
 .icon-btn {
   display: grid; place-items: center; width: 38px; height: 38px;
+  color: var(--text);
   border: 1px solid var(--line); border-radius: 50%;
   background: var(--bg-elev); transition: border-color 0.2s, transform 0.2s;
 }
@@ -633,7 +637,7 @@ html { scroll-padding-top: 80px; }
     box-shadow: none !important; break-inside: avoid;
   }
   .card::after { display: none !important; }
-  .card-num, .stat-num, .metric-val, .job-company, .eyebrow { color: #000 !important; }
+  .card-num, .stat-num, .metric-val, .job-company, .eyebrow { color: #000 !important; -webkit-text-fill-color: #000 !important; filter: none !important; background: none !important; }
   .card-text, .project-desc, .job-list li, .hero-sub { color: #333 !important; }
   .bento, .projects { grid-template-columns: repeat(2, 1fr) !important; }
   .hero-stats { grid-template-columns: repeat(3, 1fr); }
@@ -715,35 +719,38 @@ html[data-theme='dark'] body::after {
     linear-gradient(90deg, var(--accent), var(--neon) 46%, rgba(110, 231, 255, 0) 94%) top / 100% 2px no-repeat;
 }
 
-/* 标题强调行：青柠 → 霓虹青渐变字 + 辉光 */
+/* 标题强调行：青柠 → 霓虹青渐变字（无辉光） */
 html[data-theme='dark'] .hero h1 .accent-line {
-  background-image: linear-gradient(100deg, var(--accent) 8%, #9fff8a 44%, var(--neon) 92%);
+  background-image: linear-gradient(100deg, var(--accent) 5%, var(--neon) 95%);
   -webkit-background-clip: text; background-clip: text;
   color: transparent;
-  filter: drop-shadow(0 0 26px var(--glow)) drop-shadow(0 0 60px rgba(110, 231, 255, 0.14));
 }
 
-/* 数字高光：冷白 → 青柠 → 霓虹青 */
+/* 数字高光：冷白 → 青柠 → 霓虹青（无辉光） */
 html[data-theme='dark'] .card-num,
 html[data-theme='dark'] .stat-num {
-  background: linear-gradient(150deg, #f2ffd0 0%, var(--accent) 42%, var(--neon) 108%);
+  background: linear-gradient(150deg, var(--accent) 0%, var(--neon) 110%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 html[data-theme='dark'] .stat-num .unit,
 html[data-theme='dark'] .card-num .unit { -webkit-text-fill-color: var(--accent); }
 
-/* 区块标题点缀：eyebrow 前置霓虹短划 */
-html[data-theme='dark'] .eyebrow { color: color-mix(in srgb, var(--accent) 78%, var(--neon)); }
+/* 区块标题点缀：eyebrow 渐变霓虹字（无辉光），前置短划霓虹渐变 */
+html[data-theme='dark'] .eyebrow {
+  background: linear-gradient(95deg, var(--accent) 10%, var(--neon) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
 html[data-theme='dark'] .eyebrow::before {
   content: ''; display: inline-block; width: 1.6em; height: 2px;
   margin-right: 0.6em; vertical-align: 0.22em;
   background: linear-gradient(90deg, var(--accent), var(--neon));
-  box-shadow: 0 0 8px var(--glow);
 }
 
 /* 主按钮：霓虹渐变 + 光晕投影 */
 html[data-theme='dark'] .btn-primary {
-  background: linear-gradient(115deg, #d7ff3e 8%, #9fff8a 45%, #6ee7ff 95%);
+  background: linear-gradient(115deg, var(--accent) 5%, var(--neon) 95%);
   color: #0a0c08;
   box-shadow: 0 8px 26px -10px var(--glow), 0 0 30px -12px rgba(110, 231, 255, 0.5);
 }
@@ -810,7 +817,7 @@ body, .nav, .card, .contact-card, .hero-stats, .hero-stats > div,
   align-items: center;
   gap: 2px;
   padding: 3px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--bg-elev);
 }

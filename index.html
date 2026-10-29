@@ -32,14 +32,14 @@
   (function () {
     try {
       var stored = localStorage.getItem('lang');
-      if (stored === 'zh-tw') { location.replace('/zh-tw/'); return; }
-      if (stored === 'en') { location.replace('/en/'); return; }
+      if (stored === 'zh-tw') { location.replace('./zh-tw/'); return; }
+      if (stored === 'en') { location.replace('./en/'); return; }
       if (localStorage.getItem('geoDone')) return; // 只在首次访问时探测一次
       localStorage.setItem('geoDone', '1');
       var go = function (lang) {
         try { localStorage.setItem('lang', lang); } catch (e) {}
-        if (lang === 'zh-tw') location.replace('/zh-tw/');
-        else if (lang === 'en') location.replace('/en/');
+        if (lang === 'zh-tw') location.replace('./zh-tw/');
+        else if (lang === 'en') location.replace('./en/');
       };
       var pick = function (c) {
         c = String(c || '').toUpperCase();
@@ -92,9 +92,9 @@
 
     <div class="nav-actions">
       <div class="lang-switch" role="group" aria-label="语言 / Language">
-        <a href="/" class="active" aria-current="true">简</a>
-        <a href="/zh-tw/" onclick="try{localStorage.setItem('lang','zh-tw')}catch(e){}">繁</a>
-        <a href="/en/" onclick="try{localStorage.setItem('lang','en')}catch(e){}">EN</a>
+        <a href="./" class="active" aria-current="true">简</a>
+        <a href="./zh-tw/" onclick="try{localStorage.setItem('lang','zh-tw')}catch(e){}">繁</a>
+        <a href="./en/" onclick="try{localStorage.setItem('lang','en')}catch(e){}">EN</a>
       </div>
       <button class="icon-btn no-print" id="theme-toggle" type="button" aria-label="切换深浅色主题">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
